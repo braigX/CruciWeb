@@ -13,34 +13,47 @@ $url = isset($_GET['url']) ? '/' . rtrim($_GET['url'], '/') : '/';
 $params = $_GET;
 unset($params['url']);
 
-// Check if the route matches
-if (array_key_exists($url, $routes)) {
-    [$controllerName, $method] = $routes[$url];
-    $controllerPath = ROOT . "app/Controllers/$controllerName.php";
+try {
+    // Check if the route matches
+    if (array_key_exists($url, $routes)) {
+        [$controllerName, $method] = $routes[$url];
+        $controllerPath = ROOT . "app/Controllers/$controllerName.php";
 
-    if (file_exists($controllerPath)) {
-        require_once $controllerPath;
-        $controller = new $controllerName();
+        if (file_exists($controllerPath)) {
+            require_once $controllerPath;
+            $controller = new $controllerName();
 
-        if (method_exists($controller, $method)) {
-            Logger::info("Routing to $controllerName::$method with params: " . json_encode($params));
-            call_user_func_array([$controller, $method], [$params]); // Pass params as argument
-            exit;
+            if (method_exists($controller, $method)) {
+                Logger::info("Routing to $controllerName::$method with params: " . json_encode($params));
+                call_user_func_array([$controller, $method], [$params]); // Pass params as argument
+                exit;
+            } else {
+                throw new Exception("Method '$method' not found in $controllerName.", 404);
+            }
         } else {
-            http_response_code(404);
-            Logger::error("Method '$method' not found in $controllerName.");
-            echo "Error 404: Method not found.";
-            exit;
+            throw new Exception("Controller '$controllerName' not found.", 404);
         }
     } else {
-        http_response_code(404);
-        Logger::error("Controller '$controllerName' not found.");
-        echo "Error 404: Controller not found.";
-        exit;
+        throw new Exception("Route '$url' not found.", 404);
     }
-} else {
-    http_response_code(404);
-    Logger::error("Route '$url' not found.");
-    echo "Error 404: Route not found.";
+} catch (Exception $e) {
+    Logger::error($e->getMessage());
+
+    require_once ROOT . 'app/Controllers/ErrorController.php';
+    $errorController = new ErrorController();
+
+    switch ($e->getCode()) {
+        case 404:
+            $errorController->show404();
+            break;
+        case 500:
+            $errorController->show500();
+            break;
+        default:
+            $errorController->showCustom($e->getCode(), $e->getMessage());
+            break;
+    }
     exit;
 }
+
+

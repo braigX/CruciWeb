@@ -25,4 +25,7 @@ return [
     '/api/grids/create' => ['GridController', 'storeApi'],
     '/api/grids/validate' => ['GridController', 'validateAnswers'],
     '/api/grids/saveProgress' => ['GridController', 'saveProgress'],
+    //install
+    '/install' => ['InstallController', 'showForm'],
+    '/install/submit' => ['InstallController', 'submitForm'],
 ];

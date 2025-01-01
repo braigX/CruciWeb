@@ -1018,7 +1018,9 @@ section {
 #playGridForm td {
   padding: 0px;
 }
-
+section.attempts {
+  width: 100%;
+}
 .attempts-table {
   width: 100%;
   border-collapse: collapse;
@@ -1027,18 +1029,48 @@ section {
 
 .attempts-table th,
 .attempts-table td {
-  border: 1px solid #ddd;
+  border: 1px solid #0056a8;
   padding: 10px;
   text-align: left;
 }
 
 .attempts-table th {
-  background-color: #f4f4f4;
+  background-color: #0056a8;
   font-weight: bold;
 }
 
 .attempts-table tr:nth-child(even) {
   background-color: #f9f9f9;
+}
+
+.error-page {
+  text-align: center;
+  margin-top: 100px;
+}
+
+.error-page h1 {
+  font-size: 4rem;
+  color: #d9534f;
+  margin-bottom: 20px;
+}
+
+.error-page p {
+  font-size: 1.5rem;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.error-page .button {
+  background-color: #0056a8;
+  color: #fff;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.error-page .button:hover {
+  background-color: #003d7c;
 }
 
 @media (min-width: 1024px) {
