@@ -1,25 +1,40 @@
 <?php require_once ROOT . 'app/Views/layouts/header.php'; ?>
 
 <main class="grid-management">
-    <h1>Play Grid</h1>
+    <h1>Continue Playing</h1>
+    <p>Game: <?= htmlspecialchars($game['name']); ?> (Difficulty: <?= htmlspecialchars($game['difficulty']); ?>)</p>
     <p>Fill in the crossword puzzle below. Use the hints provided!</p>
 
     <div class="grid-container">
         <!-- Crossword Grid -->
         <div class="crossword-grid">
-            <form id="playGridForm">
+            <form id="playGridForm" data-game-id="<?= htmlspecialchars($gameId); ?>">
                 <table>
-                    <?php foreach ($game['words'] as $rowIndex => $row): ?>
+                    <?php 
+                    // Convert progress JSON into a usable format
+                    $progressData = json_decode($attempt['progress'] ?? '[]', true);
+
+                    // Iterate over rows
+                    foreach ($game['words'] as $rowIndex => $row): ?>
                         <tr>
-                            <?php foreach ($row as $colIndex => $cell): ?>
+                            <?php foreach ($row as $colIndex => $cell): 
+                                // Find progress value for the current cell
+                                $progressValue = '';
+                                foreach ($progressData as $progress) {
+                                    if ($progress['row'] == $rowIndex && $progress['col'] == $colIndex) {
+                                        $progressValue = $progress['value'];
+                                        break;
+                                    }
+                                }
+                            ?>
                                 <td>
-                                    <input type="text" 
-                                           maxlength="1"
-                                           data-row="<?= $rowIndex; ?>"
-                                           data-col="<?= $colIndex; ?>"
-                                           data-value="<?= htmlspecialchars($cell); ?>"
-                                           <?= $cell === "" ? 'style="background-color:black;" disabled' : 'required'; ?>
-                                    >
+                                    <input 
+                                        type="text" 
+                                        maxlength="1"
+                                        data-row="<?= $rowIndex; ?>"
+                                        data-col="<?= $colIndex; ?>"
+                                        value="<?= htmlspecialchars(($progressValue !== '' && $progressValue !== '+') ? $progressValue : ''); ?>"
+                                        <?= $cell === "" ? 'style="background-color:black;" disabled' : ""; ?>                                    >
                                 </td>
                             <?php endforeach; ?>
                         </tr>
@@ -51,42 +66,6 @@
         </div>
     </div>
 
-    <!-- Successful Attempts -->
-    <section class="attempts">
-        <h2>Successful Attempts</h2>
-        <?php if (!empty($attempts)): ?>
-            <table class="attempts-table">
-                <thead>
-                    <tr>
-                        <th>Player</th>
-                        <th>Completion Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($attempts as $attempt): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($attempt['username'] ?? 'Anonymous'); ?></td>
-                            <td><?= htmlspecialchars($attempt['finished_at']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php else: ?>
-            <p>No successful attempts yet. Be the first to complete this grid!</p>
-        <?php endif; ?>
-    </section>
-
-    <!-- Modals -->
-    <div id="loginModal" class="modal hidden">
-        <div class="modal-content">
-            <h2>You Are Not Logged In</h2>
-            <p>To fully enjoy CruciWeb, please log in or play as an anonymous user.</p>
-            <div class="modal-buttons">
-                <button id="playAnonymous" class="button">Play as Anonymous</button>
-                <button id="goToLogin" class="button">Login</button>
-            </div>
-        </div>
-    </div>
     <!-- Solved popup -->
     <div id="solvedModal" class="modal hidden">
         <div class="modal-content">
@@ -110,6 +89,7 @@
     <script>
         const userLoggedIn = <?= json_encode(Session::has('user')); ?>;
         const gameId = <?= json_encode($gameId); ?>;
+        const savedProgress = <?= json_encode($progressData); ?>;
     </script>
     <script src="/public/js/play.js"></script>
 </main>

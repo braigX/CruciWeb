@@ -3,6 +3,25 @@
 <main class="auth-page">
     <h1>Login</h1>
     <form action="/login/submit" method="POST" class="auth-form">
+        <?php
+            
+        ?>
+        <?php $errors = Session::get('errors') ?? [];
+            if (!empty($errors)): ?>
+            <div class="message error">
+                <ul>
+                    <?php foreach ($errors as $error): ?>
+                        <li><?= htmlspecialchars($error); ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+            <?php 
+            // Clear errors from the session after displaying them
+            Session::remove('errors'); 
+            ?>
+        <?php endif; ?>
+
+
         <label for="username">Username or Email:</label>
         <input type="text" id="username" name="username" placeholder="Enter your username or email" required>
 

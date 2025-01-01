@@ -2,14 +2,19 @@
 
 return [
     '/' => ['HomeController', 'index'],
+    // grids
     '/grids' => ['GridController', 'browse'],
+    '/saved-grids' => ['GridController', 'browse_saved'],
     '/grids/create' => ['GridController', 'create'],
     '/grids/play' => ['GridController', 'play'],
+    '/grids/continiue-play' => ['GridController', 'ContinuePlay'],
+    // auth
     '/login' => ['AuthController', 'login'],
     '/login/submit' => ['AuthController', 'authenticate'],
     '/signup' => ['AuthController', 'signup'],
     '/signup/submit' => ['AuthController', 'register'],
     '/logout' => ['AuthController', 'logout'],
+    // admin
     '/admin/users' => ['UserController', 'index'],
     '/admin/users/add' => ['UserController', 'add'],
     '/admin/users/edit' => ['UserController', 'edit'],
@@ -19,4 +24,5 @@ return [
     // APIs
     '/api/grids/create' => ['GridController', 'storeApi'],
     '/api/grids/validate' => ['GridController', 'validateAnswers'],
+    '/api/grids/saveProgress' => ['GridController', 'saveProgress'],
 ];

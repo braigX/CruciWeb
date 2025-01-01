@@ -7,20 +7,32 @@ class AuthController {
         // Render the login view
         require_once ROOT . 'app/Views/auth/login.php';
     }
-
     public function authenticate() {
         // Handle form submission
         $username = $_POST['username'] ?? null;
         $password = $_POST['password'] ?? null;
-
-        if (!$username || !$password) {
-            echo "Both username and password are required.";
-            return;
+    
+        // Collect errors
+        $errors = [];
+    
+        if (!$username) {
+            $errors[] = "Username is required.";
         }
-
+    
+        if (!$password) {
+            $errors[] = "Password is required.";
+        }
+    
+        if (!empty($errors)) {
+            // Store errors in the session and redirect back
+            Session::set('errors', $errors);
+            header('Location: /login');
+            exit;
+        }
+    
         // Authenticate the user
         $user = User::authenticate($username, $password);
-
+    
         if ($user) {
             // Set user session
             Session::set('user', [
@@ -29,11 +41,15 @@ class AuthController {
                 'role' => $user['role'],
             ]);
             header('Location: /');
+            exit;
         } else {
-            // Login failed, show error
-            echo "Invalid username or password.";
+            // Login failed, store error and redirect back
+            Session::set('errors', ['Invalid username or password.']);
+            header('Location: /login');
+            exit;
         }
     }
+    
 
     public function signup() {
         // Render the signup view

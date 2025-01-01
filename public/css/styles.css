@@ -483,6 +483,7 @@ footer p a:hover {
 
 .crossword-grid {
   flex: 2;
+  width: 100%;
 }
 
 .clues {
@@ -549,6 +550,13 @@ footer p a:hover {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.save-button {
+  background-color: #3ea800;
+}
+.save-button:hover {
+  background-color: #00a840;
 }
 
 .validate-button:hover {
@@ -675,7 +683,7 @@ td input,
   text-align: center;
   font-size: 1rem;
   box-sizing: border-box;
-  background-color: gray;
+  /* background-color: gray; */
   color: #000;
 }
 
@@ -877,6 +885,160 @@ main {
 section {
   margin-top: 40px;
   border-radius: 20px;
+}
+
+/* Common Styles for Messages */
+.message {
+  padding: 15px 20px;
+  margin: 15px 0;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid;
+}
+
+/* Error Message */
+.message.error {
+  background-color: #f8d7da;
+  color: #842029;
+  border-color: #f5c2c7;
+}
+
+/* Success Message */
+.message.success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  border-color: #badbcc;
+}
+
+/* Info Message */
+.message.info {
+  background-color: #cff4fc;
+  color: #055160;
+  border-color: #b6effb;
+}
+
+/* Icon Placeholder for Messages */
+.message::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.message.error::before {
+  background-image: url("/public/imgs/oops.png"); /* Replace with your actual error icon path */
+}
+
+.message.success::before {
+  background-image: url("/public/imgs/prize.png"); /* Replace with your actual success icon path */
+}
+
+.message.info::before {
+  background-image: url("/public/icons/info-icon.svg"); /* Replace with your actual info icon path */
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 90%;
+}
+
+.modal-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.modal-content p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.modal-buttons .button {
+  background-color: #0056a8;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-buttons .button:hover {
+  background-color: #003d7c;
+}
+
+/* Modal Icon */
+.modal-icon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+}
+/* Show Modal */
+.modal.visible {
+  display: flex;
+}
+
+#playGridForm td {
+  padding: 0px;
+}
+
+.attempts-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.attempts-table th,
+.attempts-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.attempts-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.attempts-table tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
 @media (min-width: 1024px) {

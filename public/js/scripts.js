@@ -33,8 +33,13 @@ document.addEventListener("DOMContentLoaded", () => {
       headerRow.appendChild(headerCell);
     }
     table.appendChild(headerRow);
-
     const grid = [];
+
+    // Calculate dynamic font size
+    const cellSize =
+      Math.min(window.innerWidth / cols, window.innerHeight / rows) * 0.8; // Adjust 0.8 for padding/margin
+    const fontSize = `${cellSize * 0.5}px`; // Adjust 0.5 for proportional font size
+
     for (let i = 0; i < rows; i++) {
       const row = [];
       const tr = document.createElement("tr");
@@ -42,6 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // Add row number
       const rowHeader = document.createElement("td");
       rowHeader.textContent = i + 1; // Row number
+      // rowHeader.style.fontSize = fontSize;
+      rowHeader.style.textAlign = "center";
       tr.appendChild(rowHeader);
 
       for (let j = 0; j < cols; j++) {
@@ -58,15 +65,26 @@ document.addEventListener("DOMContentLoaded", () => {
           const value = input.value.trim().toUpperCase();
           row[j].is_black = value === "#";
           row[j].solution = value !== "#" ? value : "";
-          input.style.backgroundColor = input.value ? "white" : "gray";
+          input.style.backgroundColor = input.value
+            ? "white"
+            : "rgba(0, 0, 0, 0.2)";
         });
-        input.style.backgroundColor = "gray";
+
+        input.style.backgroundColor = "rgba(0, 0, 0, 0.2)";
+        input.style.fontSize = fontSize; // Dynamic font size
+        input.style.width = `${cellSize}px`; // Set cell size
+        input.style.height = `${cellSize}px`;
+        input.style.textAlign = "center"; // Align text in the middle
+        input.style.boxSizing = "border-box"; // Prevent padding from affecting size
+
         td.appendChild(input);
         tr.appendChild(td);
       }
       table.appendChild(tr);
       grid.push(row);
     }
+
+    gridContainer.appendChild(table);
 
     gridContainer.appendChild(table);
 

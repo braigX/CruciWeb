@@ -10,7 +10,11 @@
                     <h2><?= htmlspecialchars($game['name']); ?></h2>
                     <p><strong>Difficulty:</strong> <?= htmlspecialchars($game['difficulty']); ?></p>
                     <p><strong>Created by:</strong> <?= htmlspecialchars($game['creator']); ?></p>
-                    <a href="/grids/play?game=<?= htmlspecialchars($game['id']); ?>" class="button">Play</a>
+                    <?php
+                        if(Session::get('user') && Session::get('user')['role'] !== 'admin'){
+                            echo '<a href="/grids/play?game=' . htmlspecialchars($game['id']) . '" class="button">Play</a>';
+                        }
+                    ?>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>

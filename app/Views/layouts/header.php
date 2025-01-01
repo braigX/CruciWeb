@@ -20,6 +20,7 @@
                 ?>
 
                 <?php if ($role === 'registered'): ?>
+                    <li><a href="/saved-grids">Saved Grids</a></li>
                     <li><a href="/grids/create">Add Grid</a></li>
                 <?php endif; ?>
 
