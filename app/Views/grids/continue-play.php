@@ -2,23 +2,28 @@
 
 <main class="grid-management">
     <h1>Continue Playing</h1>
-    <p>Game: <?= htmlspecialchars($game['name']); ?> (Difficulty: <?= htmlspecialchars($game['difficulty']); ?>)</p>
+    <p>Game: <strong> <?= htmlspecialchars($game['name']); ?> </strong> (Difficulty: <strong> <?= htmlspecialchars($game['difficulty']); ?></strong>)</p>
     <p>Fill in the crossword puzzle below. Use the hints provided!</p>
 
     <div class="grid-container">
-        <!-- Crossword Grid -->
         <div class="crossword-grid">
             <form id="playGridForm" data-game-id="<?= htmlspecialchars($gameId); ?>">
                 <table>
+                    <tr>
+                        <td></td>
+                        <?php foreach (range('A', chr(65 + count($game['words'][0]) - 1)) as $colHeader): ?>
+                            <th><?= $colHeader; ?></th>
+                        <?php endforeach; ?>
+                    </tr>
+
                     <?php 
-                    // Convert progress JSON into a usable format
                     $progressData = json_decode($attempt['progress'] ?? '[]', true);
 
-                    // Iterate over rows
                     foreach ($game['words'] as $rowIndex => $row): ?>
                         <tr>
+                            <th><?= $rowIndex + 1; ?></th>
+                            
                             <?php foreach ($row as $colIndex => $cell): 
-                                // Find progress value for the current cell
                                 $progressValue = '';
                                 foreach ($progressData as $progress) {
                                     if ($progress['row'] == $rowIndex && $progress['col'] == $colIndex) {
@@ -26,6 +31,8 @@
                                         break;
                                     }
                                 }
+
+                                $encodedValue = base64_encode($cell);
                             ?>
                                 <td>
                                     <input 
@@ -33,40 +40,40 @@
                                         maxlength="1"
                                         data-row="<?= $rowIndex; ?>"
                                         data-col="<?= $colIndex; ?>"
+                                        data-value="<?= htmlspecialchars($encodedValue); ?>" 
                                         value="<?= htmlspecialchars(($progressValue !== '' && $progressValue !== '+') ? $progressValue : ''); ?>"
-                                        <?= $cell === "" ? 'style="background-color:black;" disabled' : ""; ?>                                    >
+                                        <?= $cell === "" ? 'style="background-color:black;" disabled' : ""; ?>
+                                    >
                                 </td>
                             <?php endforeach; ?>
                         </tr>
                     <?php endforeach; ?>
                 </table>
+
                 <button type="button" id="validateGrid" class="validate-button">Validate Answers</button>
                 <?php if (Session::has('user')): ?>
                     <button type="button" id="saveProgress" class="save-button">Save Progress</button>
                 <?php endif; ?>
             </form>
         </div>
-
-        <!-- Clues -->
         <div class="clues">
             <h2>Clues</h2>
             <h3>Across</h3>
             <ul>
                 <?php foreach ($hints['hints']['row'] as $rowNum => $clue): ?>
-                    <li><?= htmlspecialchars($rowNum); ?>. <?= htmlspecialchars($clue); ?></li>
+                    <li><strong> <?= htmlspecialchars($rowNum); ?>.</strong>  <?= htmlspecialchars($clue); ?></li>
                 <?php endforeach; ?>
             </ul>
 
             <h3>Down</h3>
             <ul>
                 <?php foreach ($hints['hints']['col'] as $colLetter => $clue): ?>
-                    <li><?= htmlspecialchars($colLetter); ?>. <?= htmlspecialchars($clue); ?></li>
+                    <li><strong> <?= htmlspecialchars($colLetter); ?>.</strong>  <?= htmlspecialchars($clue); ?></li>
                 <?php endforeach; ?>
             </ul>
         </div>
     </div>
 
-    <!-- Solved popup -->
     <div id="solvedModal" class="modal hidden">
         <div class="modal-content">
             <img src="/public/imgs/prize.png" alt="Success" class="modal-icon">
@@ -76,7 +83,6 @@
         </div>
     </div>
 
-    <!-- Not Solved popup -->
     <div id="notSolvedModal" class="modal hidden">
         <div class="modal-content">
             <img src="/public/imgs/oops.png" alt="Error" class="modal-icon">

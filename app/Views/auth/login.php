@@ -16,7 +16,6 @@
                 </ul>
             </div>
             <?php 
-            // Clear errors from the session after displaying them
             Session::remove('errors'); 
             ?>
         <?php endif; ?>

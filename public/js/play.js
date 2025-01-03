@@ -4,22 +4,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const playAnonymous = document.getElementById("playAnonymous");
     const goToLogin = document.getElementById("goToLogin");
 
-    // Show the modal
     modal.classList.add("visible");
 
-    // Handle "Play as Anonymous"
     playAnonymous.addEventListener("click", () => {
       modal.classList.remove("visible");
-      // Redirect to play as anonymous if needed
     });
 
-    // Handle "Login"
     goToLogin.addEventListener("click", () => {
       window.location.href = "/login";
     });
   }
 
   const validateGridButton = document.getElementById("validateGrid");
+  const crosswordGridForm = document.getElementById("playGridForm");
 
   validateGridButton.addEventListener("click", async () => {
     const solvedModal = document.getElementById("solvedModal");
@@ -30,18 +27,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputs = form.querySelectorAll("input:not([disabled])");
     const answers = [];
 
-    // Close solved modal
     solvedClose.addEventListener("click", () => {
       solvedModal.classList.remove("visible");
       window.location.reload();
     });
 
-    // Close not solved modal
     notSolvedClose.addEventListener("click", () => {
       notSolvedModal.classList.remove("visible");
     });
 
-    // Collect answers from all enabled inputs
     inputs.forEach((input) => {
       const row = input.dataset.row;
       const col = input.dataset.col;
@@ -50,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
       answers.push({ row: parseInt(row), col: parseInt(col), value });
     });
 
-    // Prepare payload
     const payload = {
       gameId: gameId,
       answers,
@@ -85,7 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputs = form.querySelectorAll("input:not([disabled])");
     const progress = [];
 
-    // Collect data from all enabled inputs
     inputs.forEach((input) => {
       const row = input.dataset.row;
       const col = input.dataset.col;
@@ -94,11 +86,10 @@ document.addEventListener("DOMContentLoaded", () => {
       progress.push({
         row: parseInt(row),
         col: parseInt(col),
-        value: value || "+", // Fill empty cells with '+'
+        value: value || "+",
       });
     });
 
-    // Prepare payload
     const payload = {
       game_id: gameId,
       progress,
@@ -116,12 +107,46 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await response.json();
 
       if (response.ok) {
-        console.log("Progress saved successfully:", result.message);
+        window.location.href = "/saved-grids";
       } else {
         console.error("Error saving progress:", result.error);
+        alert("Ooops! Your Prress was not saved!");
       }
     } catch (error) {
       console.error("Error:", error);
+    }
+  });
+
+  if (!crosswordGridForm) return;
+
+  const validateInput = (input) => {
+    const correctValue = input.dataset.value
+      ? atob(input.dataset.value).toUpperCase()
+      : "";
+    const enteredValue = input.value.trim().toUpperCase();
+
+    if (enteredValue === "") {
+      input.style.backgroundColor = "white";
+      input.style.color = "black";
+    } else if (enteredValue === correctValue) {
+      input.style.backgroundColor = "green";
+      input.style.color = "white";
+    } else {
+      input.style.backgroundColor = "red";
+      input.style.color = "white";
+    }
+  };
+
+  const inputs = crosswordGridForm.querySelectorAll(
+    "input[type='text']:not([disabled])"
+  );
+  inputs.forEach((input) => validateInput(input));
+
+  crosswordGridForm.addEventListener("input", (event) => {
+    const input = event.target;
+
+    if (input.tagName.toLowerCase() === "input") {
+      validateInput(input);
     }
   });
 });

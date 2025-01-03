@@ -1,4 +1,3 @@
-/* Import Ubuntu Fonts */
 @font-face {
   font-family: "Ubuntu";
   src: url("/public/fonts/Ubuntu/Ubuntu-Regular.ttf") format("truetype");
@@ -27,7 +26,6 @@
   font-style: italic;
 }
 
-/* Import Roboto Condensed Fonts */
 @font-face {
   font-family: "Roboto Condensed";
   src: url("/public/fonts/Roboto_Condensed/static/RobotoCondensed-Regular.ttf")
@@ -60,7 +58,6 @@
   font-style: italic;
 }
 
-/* Universal styles */
 * {
   margin: 0;
   padding: 0;
@@ -71,7 +68,6 @@
   font-style: normal;
 }
 
-/* Body styles */
 body {
   line-height: 1.6;
   color: #333;
@@ -81,7 +77,6 @@ body {
   min-height: 100vh;
 }
 
-/* Header Styles */
 header {
   display: flex;
   align-items: center;
@@ -90,6 +85,17 @@ header {
   color: #fff;
   padding: 10px 20px;
   position: relative;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 600;
+}
+
+strong {
+  font-weight: 600;
 }
 
 header h1 {
@@ -120,7 +126,6 @@ nav ul li a:hover {
   border-radius: 5px;
 }
 
-/* Hamburger Menu Button */
 .menu-toggle {
   display: none;
   flex-direction: column;
@@ -143,7 +148,6 @@ nav ul li a:hover {
   transition: all 0.3s ease;
 }
 
-/* Mobile Menu */
 .menu {
   display: flex;
   flex-direction: row;
@@ -184,7 +188,6 @@ nav ul li a:hover {
   }
 }
 
-/* Footer styles */
 footer {
   background-color: #222;
   color: #ccc;
@@ -211,9 +214,6 @@ footer p a:hover {
   color: #0056a8;
 }
 
-/* HOME PAGE  */
-
-/* Banner Section */
 .banner {
   background: linear-gradient(135deg, #0056a8, #003d7c);
   color: #fff;
@@ -249,7 +249,6 @@ footer p a:hover {
   color: #fff;
 }
 
-/* Features Section */
 .features {
   padding: 40px 20px;
   text-align: center;
@@ -273,7 +272,6 @@ footer p a:hover {
   margin-bottom: 10px;
 }
 
-/* About Us Section */
 .about {
   padding: 40px 20px;
   background-color: #fff;
@@ -292,7 +290,6 @@ footer p a:hover {
   color: #555;
 }
 
-/* Community Section */
 .community {
   padding: 40px 20px;
   background-color: #f0f0f0;
@@ -327,7 +324,6 @@ footer p a:hover {
   transform: scale(1.05);
 }
 
-/* Testimonials Section */
 .testimonials {
   padding: 40px 20px;
   background-color: #f9f9f9;
@@ -356,7 +352,6 @@ footer p a:hover {
   color: #333;
 }
 
-/* Call to Action Section */
 .cta {
   padding: 40px 20px;
   background: linear-gradient(135deg, #0056a8, #003d7c);
@@ -390,8 +385,6 @@ footer p a:hover {
   background-color: #003d7c;
   color: #fff;
 }
-
-/* AUTH PAGES  */
 
 .auth-page {
   width: 390px;
@@ -465,7 +458,7 @@ footer p a:hover {
 .auth-page p a:hover {
   text-decoration: underline;
 }
-/* Grid Management Styles */
+
 .grid-management {
   padding: 20px;
   display: flex;
@@ -510,7 +503,6 @@ footer p a:hover {
   margin-bottom: 5px;
 }
 
-/* Crossword Grid Styles */
 .crossword-grid table {
   border-collapse: collapse;
   width: 100%;
@@ -563,7 +555,6 @@ footer p a:hover {
   background-color: #003d7c;
 }
 
-/* Grid Creation Styles */
 .grid-creation {
   padding: 20px;
   display: flex;
@@ -592,7 +583,6 @@ footer p a:hover {
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
-  /* width: 100%; */
 }
 
 td input,
@@ -619,7 +609,6 @@ td input,
   background-color: #003d7c;
 }
 
-/* Grid and Hints Section */
 .grid-container {
   display: flex;
   justify-content: space-between;
@@ -661,7 +650,6 @@ td input,
   margin-bottom: 5px;
 }
 
-/* Crossword Grid Styles */
 #crosswordGrid table {
   border-collapse: collapse;
   width: 100%;
@@ -683,7 +671,7 @@ td input,
   text-align: center;
   font-size: 1rem;
   box-sizing: border-box;
-  /* background-color: gray; */
+
   color: #000;
 }
 
@@ -712,7 +700,6 @@ td input,
   width: 100%;
 }
 
-/* Grid Browse Styles */
 .grid-browse {
   padding: 20px;
   text-align: center;
@@ -786,7 +773,6 @@ main h1 {
   transform: scale(1.05);
 }
 
-/* Table Styles */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -832,7 +818,6 @@ tbody td a:hover {
   color: #003d7c;
 }
 
-/* Form Styles */
 form {
   display: flex;
   flex-direction: column;
@@ -873,7 +858,6 @@ form button:hover {
   transform: scale(1.05);
 }
 
-/* Main Wrapper Styles */
 main {
   padding: 20px;
   max-width: 90%;
@@ -887,7 +871,6 @@ section {
   border-radius: 20px;
 }
 
-/* Common Styles for Messages */
 .message {
   padding: 15px 20px;
   margin: 15px 0;
@@ -901,28 +884,24 @@ section {
   border-left: 5px solid;
 }
 
-/* Error Message */
 .message.error {
   background-color: #f8d7da;
   color: #842029;
   border-color: #f5c2c7;
 }
 
-/* Success Message */
 .message.success {
   background-color: #d1e7dd;
   color: #0f5132;
   border-color: #badbcc;
 }
 
-/* Info Message */
 .message.info {
   background-color: #cff4fc;
   color: #055160;
   border-color: #b6effb;
 }
 
-/* Icon Placeholder for Messages */
 .message::before {
   content: "";
   display: inline-block;
@@ -934,15 +913,15 @@ section {
 }
 
 .message.error::before {
-  background-image: url("/public/imgs/oops.png"); /* Replace with your actual error icon path */
+  background-image: url("/public/imgs/oops.png");
 }
 
 .message.success::before {
-  background-image: url("/public/imgs/prize.png"); /* Replace with your actual success icon path */
+  background-image: url("/public/imgs/prize.png");
 }
 
 .message.info::before {
-  background-image: url("/public/icons/info-icon.svg"); /* Replace with your actual info icon path */
+  background-image: url("/public/icons/info-icon.svg");
 }
 
 .input-group {
@@ -950,7 +929,6 @@ section {
   flex-direction: column;
 }
 
-/* Modal Styles */
 .modal {
   display: none;
   position: fixed;
@@ -1004,13 +982,12 @@ section {
   background-color: #003d7c;
 }
 
-/* Modal Icon */
 .modal-icon {
   width: 100px;
   height: 100px;
   margin-bottom: 20px;
 }
-/* Show Modal */
+
 .modal.visible {
   display: flex;
 }
@@ -1085,7 +1062,6 @@ section.attempts {
   }
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   main {
     max-width: 750px;

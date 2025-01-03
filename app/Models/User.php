@@ -4,18 +4,17 @@ class User {
         try {
             $db = new PDO(DSN, DB_USER, DB_PASS);
 
-            // Check if the user exists
             $stmt = $db->prepare("SELECT * FROM users WHERE username = :username");
             $stmt->execute([':username' => $username]);
 
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($user && password_verify($password, $user['password'])) {
-                // Return user data if authenticated
+
                 return $user;
             }
 
-            return false; // Authentication failed
+            return false; 
         } catch (PDOException $e) {
             Logger::error("Database error: " . $e->getMessage());
             return false;
@@ -25,23 +24,19 @@ class User {
     public static function register($name, $username, $password) {
         try {
             $db = new PDO(DSN, DB_USER, DB_PASS);
-    
-            // Check if username already exists
+
             $stmt = $db->prepare("SELECT COUNT(*) FROM users WHERE username = :username");
             $stmt->execute([':username' => $username]);
-    
+
             if ($stmt->fetchColumn() > 0) {
-                return false; // Username already exists
+                return false; 
             }
-    
-            // Hash the password
+
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-    
-            // Insert the new user
+
             $stmt = $db->prepare("INSERT INTO users (name, username, password) VALUES (:name, :username, :password)");
             $stmt->execute([':name' => $name, ':username' => $username, ':password' => $hashedPassword]);
-    
-            // Retrieve and return the new user data
+
             $userId = $db->lastInsertId();
             return self::findById($userId);
         } catch (PDOException $e) {
@@ -49,7 +44,6 @@ class User {
             return false;
         }
     }
-    
 
     public static function getAll() {
         try {
@@ -66,10 +60,8 @@ class User {
         try {
             $db = new PDO(DSN, DB_USER, DB_PASS);
 
-            // Hash the password
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-            // Insert the new user
             $stmt = $db->prepare("INSERT INTO users (name, username, role, password) VALUES (:name, :username, :role, :password)");
             return $stmt->execute([
                 ':name' => $name,

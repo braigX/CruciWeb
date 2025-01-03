@@ -4,7 +4,7 @@ require_once ROOT . 'app/Models/User.php';
 
 class UserController {
     public function index() {
-        // Fetch all users
+
         $users = User::getAll();
         require_once ROOT . 'app/Views/admin/users/index.php';
     }
@@ -42,18 +42,18 @@ class UserController {
             echo "Invalid user ID.";
             return;
         }
-    
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = $_POST['username'] ?? null;
             $name = $_POST['name'] ?? null;
             $role = $_POST['role'] ?? 'registered';
-    
+
             if (!$username || !$name) {
                 echo "<p class='error'>All fields are required.</p>";
                 return;
             }
             $result = User::update($userId, $name, $username, $role);
-    
+
             if ($result) {
                 header("Location: /admin/users");
                 exit;
@@ -63,9 +63,6 @@ class UserController {
         } else {
             $userDetails = User::findById($userId);
 
-            //  print_r($user);
-            //  exit;
-
             if (!$userDetails) {
                 echo "<p class='error'>User not found.</p>";
                 return;
@@ -73,16 +70,50 @@ class UserController {
             require_once ROOT . 'app/Views/admin/users/edit.php';
         }
     }
-    
 
     public function delete($params) {
         $userId = $params['id'] ?? null;
 
-        if ($userId && User::delete($userId)) {
+        if (!$userId) {
+            echo "User ID is required.";
+            return;
+        }
+
+        try {
+
+            $db = new PDO(DSN, DB_USER, DB_PASS);
+            $db->beginTransaction();
+
+            $stmt = $db->prepare("SELECT id FROM games WHERE creator_id = :userId");
+            $stmt->execute([':userId' => $userId]);
+            $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if ($games) {
+                $gameIds = array_column($games, 'id');
+                $inClause = implode(',', array_fill(0, count($gameIds), '?'));
+
+                $deleteHints = $db->prepare("DELETE FROM hints WHERE game_id IN ($inClause)");
+                $deleteHints->execute($gameIds);
+
+                $deleteGames = $db->prepare("DELETE FROM games WHERE id IN ($inClause)");
+                $deleteGames->execute($gameIds);
+            }
+
+            $deleteAttempts = $db->prepare("DELETE FROM user_attempts WHERE user_id = :userId");
+            $deleteAttempts->execute([':userId' => $userId]);
+
+            $deleteUser = $db->prepare("DELETE FROM users WHERE id = :userId");
+            $deleteUser->execute([':userId' => $userId]);
+
+            $db->commit();
+
             header("Location: /admin/users");
             exit;
-        } else {
-            echo "Failed to delete user.";
+        } catch (PDOException $e) {
+            $db->rollBack();
+            Logger::error("Error deleting user: " . $e->getMessage());
+            echo "Failed to delete user and related data.";
         }
     }
+
 }

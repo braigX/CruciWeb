@@ -7,7 +7,6 @@ class Hint {
         try {
             $db = new PDO(DSN, DB_USER, DB_PASS);
 
-            // Insert hints
             $stmt = $db->prepare("INSERT INTO hints (game_id, hints)
                                   VALUES (:game_id, :hints)");
             $stmt->execute([
@@ -21,7 +20,7 @@ class Hint {
             return false;
         }
     }
-    
+
     public static function findByGameId($gameId) {
         try {
             $db = new PDO(DSN, DB_USER, DB_PASS);
@@ -32,7 +31,7 @@ class Hint {
             $hints = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($hints) {
-                $hints['hints'] = json_decode($hints['hints'], true); // Decode the hints structure
+                $hints['hints'] = json_decode($hints['hints'], true); 
             }
 
             return $hints;

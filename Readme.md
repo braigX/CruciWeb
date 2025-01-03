@@ -7,6 +7,6 @@ Administrator	    ✅	        ❌	        ❌	            ❌	        ✅	      
 
 Testing account:
 
-Role	                Username                    Password Save
-Registered User	    hikariinoue@gmail.com          Hikari@Inoue292	
-Administrator	    renokamoto@hotmail.fr          hikariinoue@32442
+Role	                    Username                    Password Save
+Administrator User	    hikariinoue@gmail.com          Hikari@Inoue292	
+Registered	            renokamoto@hotmail.fr          renokamoto@32442

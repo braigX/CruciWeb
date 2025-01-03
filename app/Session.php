@@ -1,14 +1,12 @@
 <?php
 
 class Session {
-    // Automatically start the session when the class is initialized
     public function __construct() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
     }
 
-    // Ensure the session is started before accessing it
     private static function ensureSessionStarted() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();

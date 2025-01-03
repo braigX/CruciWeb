@@ -5,26 +5,38 @@
     <p>Fill in the crossword puzzle below. Use the hints provided!</p>
 
     <div class="grid-container">
-        <!-- Crossword Grid -->
         <div class="crossword-grid">
             <form id="playGridForm">
                 <table>
+                    <tr>
+                        <td></td>
+                        <?php foreach (range('A', chr(65 + count($game['words'][0]) - 1)) as $colHeader): ?>
+                            <th><?= $colHeader; ?></th>
+                        <?php endforeach; ?>
+                    </tr>
+
                     <?php foreach ($game['words'] as $rowIndex => $row): ?>
                         <tr>
-                            <?php foreach ($row as $colIndex => $cell): ?>
+                            <th><?= $rowIndex + 1; ?></th>
+                            
+                            <?php foreach ($row as $colIndex => $cell): 
+                                $encodedValue = base64_encode($cell);
+                            ?>
                                 <td>
-                                    <input type="text" 
-                                           maxlength="1"
-                                           data-row="<?= $rowIndex; ?>"
-                                           data-col="<?= $colIndex; ?>"
-                                           data-value="<?= htmlspecialchars($cell); ?>"
-                                           <?= $cell === "" ? 'style="background-color:black;" disabled' : 'required'; ?>
+                                    <input 
+                                        type="text" 
+                                        maxlength="1"
+                                        data-row="<?= $rowIndex; ?>"
+                                        data-col="<?= $colIndex; ?>"
+                                        data-value="<?= htmlspecialchars($encodedValue); ?>" 
+                                        <?= $cell === "" ? 'style="background-color:black;" disabled' : 'required'; ?>
                                     >
                                 </td>
                             <?php endforeach; ?>
                         </tr>
                     <?php endforeach; ?>
                 </table>
+
                 <button type="button" id="validateGrid" class="validate-button">Validate Answers</button>
                 <?php if (Session::has('user')): ?>
                     <button type="button" id="saveProgress" class="save-button">Save Progress</button>
@@ -38,20 +50,18 @@
             <h3>Across</h3>
             <ul>
                 <?php foreach ($hints['hints']['row'] as $rowNum => $clue): ?>
-                    <li><?= htmlspecialchars($rowNum); ?>. <?= htmlspecialchars($clue); ?></li>
+                    <li> <strong> <?= htmlspecialchars($rowNum); ?>.</strong> <?= htmlspecialchars($clue); ?></li>
                 <?php endforeach; ?>
             </ul>
 
             <h3>Down</h3>
             <ul>
                 <?php foreach ($hints['hints']['col'] as $colLetter => $clue): ?>
-                    <li><?= htmlspecialchars($colLetter); ?>. <?= htmlspecialchars($clue); ?></li>
+                    <li><strong> <?= htmlspecialchars($colLetter); ?>.</strong> <?= htmlspecialchars($clue); ?></li>
                 <?php endforeach; ?>
             </ul>
         </div>
     </div>
-
-    <!-- Successful Attempts -->
     <section class="attempts">
         <h2>Successful Attempts</h2>
         <?php if (!empty($attempts)): ?>
@@ -75,8 +85,6 @@
             <p>No successful attempts yet. Be the first to complete this grid!</p>
         <?php endif; ?>
     </section>
-
-    <!-- Modals -->
     <div id="loginModal" class="modal hidden">
         <div class="modal-content">
             <h2>You Are Not Logged In</h2>
@@ -87,7 +95,6 @@
             </div>
         </div>
     </div>
-    <!-- Solved popup -->
     <div id="solvedModal" class="modal hidden">
         <div class="modal-content">
             <img src="/public/imgs/prize.png" alt="Success" class="modal-icon">
@@ -96,8 +103,6 @@
             <button id="solvedClose" class="button">Close</button>
         </div>
     </div>
-
-    <!-- Not Solved popup -->
     <div id="notSolvedModal" class="modal hidden">
         <div class="modal-content">
             <img src="/public/imgs/oops.png" alt="Error" class="modal-icon">

@@ -1,6 +1,25 @@
+# Enable mod_rewrite
 RewriteEngine On
 
-# Skip existing files and directories
+# Redirect non-www to www (optional, remove if not needed)
+# RewriteCond %{HTTP_HOST} !^www\.
+# RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+
+# Redirect HTTP to HTTPS (optional, remove if not needed)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# Prevent direct access to .env and sensitive files
+<FilesMatch "^\.">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Explicitly match URLs to static PHP files
+RewriteRule ^login$ login.php [L]
+RewriteRule ^signup$ signup.php [L]
+
+# Handle non-existent files or directories
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 

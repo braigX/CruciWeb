@@ -8,7 +8,6 @@
     </div>
 
     <form id="gridForm" action="/grids/create/submit" method="POST">
-        <!-- Input Fields -->
         <div class="form-section">
             <div class="input-group">
                 <label for="name">Grid Name:</label>
@@ -31,10 +30,8 @@
             <button type="button" id="generateGrid" class="generate-button">Generate Grid</button>
         </div>
 
-        <!-- Dynamic Grid and Hints -->
         <div class="grid-container">
             <div id="crosswordGrid" class="grid-section">
-                <!-- Crossword grid dynamically generated here -->
             </div>
             <div class="hints-section">
                 <h2>Hints</h2>
@@ -48,8 +45,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Hidden Inputs -->
         <input type="hidden" id="gridData" name="cells">
         <input type="hidden" id="hintData" name="clues">
 

@@ -6,7 +6,6 @@ class Grid {
         try {
             $db = new PDO(DSN, DB_USER, DB_PASS);
 
-            // Fetch all games
             $stmt = $db->query("SELECT g.id, g.name, g.difficulty, u.name AS creator
                                 FROM games g
                                 JOIN users u ON g.creator_id = u.id
@@ -22,7 +21,6 @@ class Grid {
         try {
             $db = new PDO(DSN, DB_USER, DB_PASS);
 
-            // Insert game metadata
             $stmt = $db->prepare("INSERT INTO games (creator_id, name, dimensions, difficulty, words)
                                   VALUES (:creator_id, :name, :dimensions, :difficulty, :words)");
             $user = Session::get('user');
@@ -34,7 +32,7 @@ class Grid {
                 ':words' => json_encode($gridData),
             ]);
 
-            return $db->lastInsertId(); // Return the new game ID
+            return $db->lastInsertId(); 
         } catch (PDOException $e) {
             Logger::error("Database error: " . $e->getMessage());
             return false;
@@ -51,7 +49,7 @@ class Grid {
             $game = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($game) {
-                $game['words'] = json_decode($game['words'], true); // Decode the grid structure
+                $game['words'] = json_decode($game['words'], true); 
             }
 
             return $game;
@@ -75,12 +73,10 @@ class Grid {
     public static function delete($id) {
         try {
             $db = new PDO(DSN, DB_USER, DB_PASS);
-    
-            // Delete related hints
+
             $stmt = $db->prepare("DELETE FROM hints WHERE game_id = :game_id");
             $stmt->execute([':game_id' => $id]);
-    
-            // Delete the game
+
             $stmt = $db->prepare("DELETE FROM games WHERE id = :id");
             return $stmt->execute([':id' => $id]);
         } catch (PDOException $e) {
@@ -88,5 +84,5 @@ class Grid {
             return false;
         }
     }
-    
+
 }
